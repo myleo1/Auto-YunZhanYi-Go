@@ -1,0 +1,12 @@
+{
+  "id": [
+    {
+      "trueName": "填自己的名字",
+      "name": "云战役登陆id",
+      "psswd": "云战役密码 默认身份证后6位",
+      "home": "打卡地址",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+      "wechatPushKey": "填server酱申请到的pushKey"
+    }
+  ]
+}
