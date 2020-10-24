@@ -2,6 +2,7 @@ package service
 
 import (
 	"bytes"
+	"crypto/tls"
 	"github.com/mizuki1412/go-core-kit/library/jsonkit"
 	"io/ioutil"
 	"net/http"
@@ -14,7 +15,11 @@ import (
 var client *http.Client
 
 func init() {
-	client = &http.Client{}
+	//跳过校验证书
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client = &http.Client{Transport: tr}
 	jar, err := cookiejar.New(nil)
 	if err != nil {
 		panic(err)
