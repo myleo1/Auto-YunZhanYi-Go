@@ -2,6 +2,7 @@ package service
 
 import (
 	uuid "github.com/iris-contrib/go.uuid"
+	"github.com/mizuki1412/go-core-kit/class/exception"
 	"net/http"
 	"strings"
 )
@@ -44,7 +45,7 @@ func GetCookie(user, pwd, userAgent, home string) string {
 	if cookies != nil {
 		u, err := uuid.NewV4()
 		if err != nil {
-			panic("genUUidErr")
+			panic(exception.New(err.Error()))
 		}
 		uid := u.String()
 		m["uuid"] = uid
@@ -52,7 +53,7 @@ func GetCookie(user, pwd, userAgent, home string) string {
 		cookie = cookies.Name + "=" + cookies.Value + ";" + " _ncov_uuid=" + uid + "; _ncov_username=" + user + "; _ncov_psswd=" + pwd
 	}
 	if cookie == "" {
-		panic("cookieEmpty")
+		panic(exception.New("cookie null"))
 	}
 	return cookie
 }

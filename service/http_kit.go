@@ -60,7 +60,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 		req, err = http.NewRequest(reqBean.Method, reqBean.Url, strings.NewReader(data.Encode()))
 	}
 	if err != nil {
-		panic("reqErr")
+		panic(err.Error())
 	}
 	if reqBean.ContentType == "" {
 		if reqBean.FormData != nil {
@@ -77,7 +77,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic("client.DoErr")
+		panic(err.Error())
 	}
 	defer resp.Body.Close()
 	var cookies *http.Cookie
@@ -86,7 +86,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic("readBodyErr")
+		panic(err.Error())
 	}
 	return cookies, string(body)
 }
