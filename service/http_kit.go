@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"crypto/tls"
+	"github.com/mizuki1412/go-core-kit/class/exception"
 	"github.com/mizuki1412/go-core-kit/library/jsonkit"
 	"io/ioutil"
 	"net/http"
@@ -22,7 +23,7 @@ func init() {
 	client = &http.Client{Transport: tr}
 	jar, err := cookiejar.New(nil)
 	if err != nil {
-		panic(err)
+		panic(exception.New(err.Error()))
 	}
 	client.Jar = jar
 }
@@ -60,7 +61,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 		req, err = http.NewRequest(reqBean.Method, reqBean.Url, strings.NewReader(data.Encode()))
 	}
 	if err != nil {
-		panic(err.Error())
+		panic(exception.New(err.Error()))
 	}
 	if reqBean.ContentType == "" {
 		if reqBean.FormData != nil {
@@ -77,7 +78,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err.Error())
+		panic(exception.New(err.Error()))
 	}
 	defer resp.Body.Close()
 	var cookies *http.Cookie
@@ -86,7 +87,7 @@ func Request(reqBean Req) (*http.Cookie, string) {
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err.Error())
+		panic(exception.New(err.Error()))
 	}
 	return cookies, string(body)
 }

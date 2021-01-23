@@ -9,6 +9,7 @@ import (
 
 var m = map[string]string{
 	"uuid":           "",
+	"locationInfo":   "浙江省杭州市",
 	"currentResd":    "",
 	"fromHbToZjDate": "",
 	"fromHbToZj":     "C",
@@ -59,7 +60,7 @@ func GetCookie(user, pwd, userAgent, home string) string {
 }
 
 //post 报送表单json
-func PostInfo(cookie, userAgent string) bool {
+func PostInfo(cookie, userAgent string) string {
 	_, body := Request(Req{
 		Url:    "https://nco.zjgsu.edu.cn/",
 		Method: http.MethodPost,
@@ -69,12 +70,16 @@ func PostInfo(cookie, userAgent string) bool {
 		},
 		JsonData: m,
 	})
-	return strings.Contains(body, "报送成功")
+	if strings.Contains(body, "报送成功") {
+		return ""
+	} else {
+		return body
+	}
 }
 
 // 微信推送
-func Push2WeChat(pushKey, id, name string, result bool) {
-	if result {
+func Push2WeChat(pushKey, id, name string, result string) {
+	if result == "" {
 		Request(Req{
 			Url:    "https://sc.ftqq.com/" + pushKey + ".send",
 			Method: http.MethodPost,
@@ -88,6 +93,7 @@ func Push2WeChat(pushKey, id, name string, result bool) {
 			Method: http.MethodPost,
 			FormData: map[string]string{
 				"text": "打卡失败" + id + name,
+				"desp": result,
 			},
 		})
 	}
