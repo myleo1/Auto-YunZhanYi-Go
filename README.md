@@ -1,8 +1,18 @@
 # Auto-YunZhanYi-Go
 
-浙江工商大学 每日自动云战役打卡
+> 浙江工商大学 每日自动云战役打卡
 
-### 1、配置微信推送
+## 目录
+
+* [配置微信推送](#配置微信推送)
+* [配置config文件](#配置config文件)
+* [使用帮助](#使用帮助)
+* [Docker食用](#Docker食用)
+* [联系](#联系)
+
+## 
+
+## 配置微信推送
 
 「Server酱」，英文名「ServerChan」，是一款「程序员」和「服务器」之间的通信软件。
 
@@ -30,18 +40,52 @@
 
 ![server-5](https://cdn.jsdelivr.net/gh/ruicky/ruicky.github.io/2020/06/05/jd-sign/server-5.jpg)
 
-### 2、配置config文件
+## 配置config文件
 
-请参考config.json里的信息填写，该程序支持多用户，在配置json文件中增加多条信息即可。
+①请参考config.json里的信息填写，详细帮助请使用如下命令查看
 
-注意：如果不懂userAgent是什么意思，保持默认即可
+```bash
+Auto-YunZhanYi-Go -h
+```
 
-### 3、注意事项
+②该程序支持多用户，在config.json文件中增加多条信息即可
 
-1、使用go build 命令自行编译或直接下载release版本使用
+## 使用帮助
 
-2、将config.json和编译好后的可执行文件放在同一目录
+①自行编译或直接下载release版本配合Linux定时任务使用
 
-3、请授予该目录777权限  chmod -R 777 /dir
+交叉编译到Linux：
 
-4、配合Linux的定时任务使用
+```bash
+make build
+```
+
+交叉编译到Arm Linux:
+
+```bash
+make build_arm
+```
+
+②将Auto-YunZhanYi-Go和config.json放入服务器
+
+③授予Auto-YunZhanYi-Go 777权限  
+
+```bash
+chmod 777 Auto-Yun-ZhanYi-Go
+```
+
+注意：执行的时候会读取当前目录下的config.json,如果用定时任务执行Auto-YunZhanYi-Go请确保 ~/ 目录下存放了config.json
+
+## Docker食用
+
+```bash
+docker run -d --network=bridge -v /home/config.json:/root/config.json --restart=always --name yunzhanyi-go myleo1/yunzhanyi-go
+```
+
+替换/home/config.json为config.json所在目录即可
+
+注意：Docker版本打卡时间为每天早晨7点04分
+
+## 联系
+
+Created by [@myleo1](https://github.com/myleo1) - feel free to contact me!

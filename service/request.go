@@ -71,15 +71,17 @@ func PostInfo(cookie, userAgent string) string {
 		JsonData: m,
 	})
 	if strings.Contains(body, "报送成功") {
-		return ""
-	} else {
-		return body
+		return "ok"
 	}
+	if strings.Contains(body, "当天已报送") {
+		return "already"
+	}
+	return body
 }
 
 // 微信推送
 func Push2WeChat(pushKey, id, name string, result string) {
-	if result == "" {
+	if result == "ok" {
 		Request(Req{
 			Url:    "https://sc.ftqq.com/" + pushKey + ".send",
 			Method: http.MethodPost,
@@ -87,14 +89,24 @@ func Push2WeChat(pushKey, id, name string, result string) {
 				"text": "打卡成功" + id + name,
 			},
 		})
-	} else {
+		return
+	}
+	if result == "already" {
 		Request(Req{
 			Url:    "https://sc.ftqq.com/" + pushKey + ".send",
 			Method: http.MethodPost,
 			FormData: map[string]string{
-				"text": "打卡失败" + id + name,
-				"desp": result,
+				"text": "当天已经打卡" + id + name,
 			},
 		})
+		return
 	}
+	Request(Req{
+		Url:    "https://sc.ftqq.com/" + pushKey + ".send",
+		Method: http.MethodPost,
+		FormData: map[string]string{
+			"text": "打卡失败" + id + name,
+			"desp": result,
+		},
+	})
 }
